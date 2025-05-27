@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/langgraph_checkpoint-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
   sha256: 2b800195532d5efb079db9754f037281225ae175f7a395523f4bf41223cbc9d6
 
 build:
@@ -25,16 +25,19 @@ requirements:
     - langchain-core >=0.2.38,<0.4
 
 test:
-  source_files:
+  files:
     - tests
   imports:
     - langgraph.checkpoint.memory
   commands:
     - pip check
-    - pytest -v tests
+    - pytest -v --strict-markers --strict-config --durations=5 --asyncio-mode=auto tests
   requires:
     - pip
     - pytest
+    - pytest-mock
+    - pytest-asyncio
+    - dataclasses-json
 
 about:
   home: https://www.github.com/langchain-ai/langgraph
