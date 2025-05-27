@@ -10,35 +10,45 @@ source:
   sha256: 2b800195532d5efb079db9754f037281225ae175f7a395523f4bf41223cbc9d6
 
 build:
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: True  # [py<39]
 
 requirements:
   host:
-    - python {{ python_min }}
-    - poetry-core
+    - python 
     - pip
+    - poetry-core
   run:
+    - python 
     - ormsgpack >=1.8.0,<2.0.0
-    - msgpack-python >=1.1.0,<2.0.0
-    - python >={{ python_min }}
     - langchain-core >=0.2.38,<0.4
 
 test:
+  source_files:
+    - tests
   imports:
     - langgraph.checkpoint.memory
   commands:
     - pip check
+    - pytest -v tests
   requires:
     - pip
-    - python {{ python_min }}
+    - pytest
 
 about:
   home: https://www.github.com/langchain-ai/langgraph
   summary: Library with base interfaces for LangGraph checkpoint savers.
   license: MIT
+  license_family: MIT
   license_file: LICENSE
+  description: |
+    This library defines the base interface for LangGraph checkpointers. Checkpointers provide a persistence layer for LangGraph. 
+    They allow you to interact with and manage the graph's state. When you use a graph with a checkpointer, the checkpointer saves
+    a checkpoint of the graph state at every superstep, enabling several powerful capabilities like human-in-the-loop,
+    "memory" between interactions and more.
+  dev_url: https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint
+  doc_url: https://github.com/langchain-ai/langgraph/blob/main/libs/checkpoint/README.md
 
 extra:
   recipe-maintainers:
