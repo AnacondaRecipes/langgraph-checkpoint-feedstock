@@ -25,7 +25,7 @@ requirements:
   run:
     - python 
     - ormsgpack >=1.8.0,<2.0.0
-    - langchain-core >=0.2.38,<0.4
+    - langchain-core >=0.2.38
 
 test:
   source_files:
