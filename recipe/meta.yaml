@@ -1,46 +1,50 @@
 {% set name = "langgraph-checkpoint" %}
-{% set version = "2.0.26" %}
+{% set version = "2.1.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  - url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
-    sha256: 2b800195532d5efb079db9754f037281225ae175f7a395523f4bf41223cbc9d6
-  - url: https://github.com/langchain-ai/langgraph/archive/refs/tags/checkpoint=={{ version }}.tar.gz
-    sha256: d3d3e63748b5d18613e0c7ef945a9df46977656b74f3912b3ec0c000797bec3b
-    folder: gh_src
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
+  sha256: 72038c0f9e22260cb9bff1f3ebe5eb06d940b7ee5c1e4765019269d4f21cf92d
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: True  # [py<39]
+  skip: true  # [py<39]
 
 requirements:
   host:
-    - python 
+    - python
     - pip
-    - poetry-core
+    - hatchling
   run:
-    - python 
-    - ormsgpack >=1.8.0,<2.0.0
+    - python
+    - ormsgpack >=1.10.0
     - langchain-core >=0.2.38
 
 test:
   source_files:
-    - gh_src/libs/checkpoint/tests
+    - tests
   imports:
+    - langgraph.checkpoint.base
+    - langgraph.checkpoint.base.id
     - langgraph.checkpoint.memory
-  commands:
-    - pip check
-    - pytest -v --strict-markers --strict-config --durations=5 --asyncio-mode=auto gh_src/libs/checkpoint/tests
+    - langgraph.checkpoint.serde.base
+    - langgraph.checkpoint.serde.jsonplus
+    - langgraph.checkpoint.serde.types
   requires:
     - pip
     - pytest
     - pytest-mock
-    - pytest-asyncio
+    - pytest-tornasync
+    - numpy
+    - pandas
     - dataclasses-json
+  commands:
+    - pip check
+    - pytest -v tests
 
 about:
   home: https://www.github.com/langchain-ai/langgraph
@@ -49,7 +53,7 @@ about:
   license_family: MIT
   license_file: LICENSE
   description: |
-    This library defines the base interface for LangGraph checkpointers. Checkpointers provide a persistence layer for LangGraph. 
+    This library defines the base interface for LangGraph checkpointers. Checkpointers provide a persistence layer for LangGraph.
     They allow you to interact with and manage the graph's state. When you use a graph with a checkpointer, the checkpointer saves
     a checkpoint of the graph state at every superstep, enabling several powerful capabilities like human-in-the-loop,
     "memory" between interactions and more.
