@@ -1,5 +1,5 @@
 {% set name = "langgraph-checkpoint" %}
-{% set version = "2.1.1" %}
+{% set version = "3.0.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
-  sha256: 72038c0f9e22260cb9bff1f3ebe5eb06d940b7ee5c1e4765019269d4f21cf92d
+  sha256: f738695ad938878d8f4775d907d9629e9fcd345b1950196effb08f088c52369e
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<39]
+  skip: true  # [py<310]
 
 requirements:
   host:
@@ -42,6 +42,7 @@ test:
     - numpy
     - pandas
     - dataclasses-json
+    - redis-py
   commands:
     - pip check
     - pytest -v tests
