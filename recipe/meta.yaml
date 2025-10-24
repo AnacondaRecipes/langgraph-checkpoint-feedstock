@@ -42,7 +42,7 @@ test:
     - numpy
     - pandas
     - dataclasses-json
-    - redis
+    - redis-py
   commands:
     - pip check
     - pytest -v tests
