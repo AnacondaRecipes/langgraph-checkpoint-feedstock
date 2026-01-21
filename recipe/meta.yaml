@@ -1,5 +1,5 @@
 {% set name = "langgraph-checkpoint" %}
-{% set version = "3.0.0" %}
+{% set version = "4.0.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
-  sha256: f738695ad938878d8f4775d907d9629e9fcd345b1950196effb08f088c52369e
+  sha256: 814d1bd050fac029476558d8e68d87bce9009a0262d04a2c14b918255954a624
 
 build:
   number: 0
@@ -21,7 +21,7 @@ requirements:
     - hatchling
   run:
     - python
-    - ormsgpack >=1.10.0
+    - ormsgpack >=1.12.0
     - langchain-core >=0.2.38
 
 test:
@@ -41,11 +41,14 @@ test:
     - pytest-tornasync
     - numpy
     - pandas
-    - dataclasses-json
+    - dataclasses-json # [py<314]
     - redis-py
   commands:
     - pip check
-    - pytest -v tests
+    - pytest -v tests # [py<314]
+    # Skip tests wich requires dataclasses-json. dataclasses-json cannot be rebuilt
+    # with python3.14 because has dependency on old version of marshmallow
+    - pytest -v tests --ignore=tests/test_jsonplus.py # [py314]
 
 about:
   home: https://www.github.com/langchain-ai/langgraph
