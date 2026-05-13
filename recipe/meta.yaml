@@ -43,7 +43,7 @@ test:
     - pandas
     - dataclasses-json # [py<314]
     - redis-py
-    -     - pycryptodome >=3.23.0 >=3.23.0
+    - pycryptodome >=3.23.0
   commands:
     - pip check
     - pytest -v tests # [py<314]
