@@ -1,5 +1,5 @@
 {% set name = "langgraph-checkpoint" %}
-{% set version = "4.0.0" %}
+{% set version = "4.1.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
-  sha256: 814d1bd050fac029476558d8e68d87bce9009a0262d04a2c14b918255954a624
+  sha256: e5bb304e30fc1363ac8fcb5f7dee5ca2185d77fe475b0d01de2c5f91324c2c21
 
 build:
   number: 0
@@ -51,7 +51,7 @@ test:
     - pytest -v tests --ignore=tests/test_jsonplus.py # [py314]
 
 about:
-  home: https://www.github.com/langchain-ai/langgraph
+  home: https://github.com/langchain-ai/langgraph
   summary: Library with base interfaces for LangGraph checkpoint savers.
   license: MIT
   license_family: MIT
