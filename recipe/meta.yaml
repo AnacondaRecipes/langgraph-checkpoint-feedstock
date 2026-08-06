@@ -41,15 +41,15 @@ test:
     - pytest-tornasync
     - numpy
     - pandas
-    - dataclasses-json # [py<314]
+    - dataclasses-json  # [py<314]
     - redis-py
     - pycryptodome >=3.23.0
   commands:
     - pip check
-    - pytest -v tests # [py<314]
+    - pytest -v tests  # [py<314]
     # Skip tests wich requires dataclasses-json. dataclasses-json cannot be rebuilt
     # with python3.14 because has dependency on old version of marshmallow
-    - pytest -v tests --ignore=tests/test_jsonplus.py # [py314]
+    - pytest -v tests --ignore=tests/test_jsonplus.py  # [py314]
 
 about:
   home: https://github.com/langchain-ai/langgraph
